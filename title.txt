@@ -1,0 +1,8 @@
+CNN (sometimes) starts outputting only zeros and does not learn during training?
+Could you check if removing the last nn.ReLU might help?
+Negative outputs would be clipped to max(0, x) which would result in a zero gradient:
+x = torch.tensor([-1., -2., -3.], requires_grad=True)
+out = F.relu(x)
+out.mean().backward()
+print(x.grad)
+# tensor([0., 0., 0.])
